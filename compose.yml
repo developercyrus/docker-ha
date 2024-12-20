@@ -1,0 +1,29 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - /etc/docker/ha:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+      - /etc/docker/ha/ssl:/config/ssl
+    #ports:
+    #  - "7443:443"  # Change this from host network to explicit port mapping
+    restart: unless-stopped
+    network_mode: host
+    #network_mode: bridge
+    depends_on:
+      - mosquitto
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    #ports:
+    #  - 1883:1883
+    #  - 9001:9001 # Optional: For web-based clients like MQTT Explorer
+    volumes:
+      - /etc/docker/mosquitto/config:/mosquitto/config
+      - /etc/docker/mosquitto/data:/mosquitto/data
+      - /etc/docker/mosquitto/log:/mosquitto/log
+    restart: unless-stopped
+    network_mode: host

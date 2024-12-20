@@ -1,0 +1,24 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+http:
+  ssl_certificate: /config/ssl/fullchain.pem
+  ssl_key: /config/ssl/privkey.pem
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 192.168.1.151    # http proxy / reverse proxy
+  server_port: 443
+  ssl_profile: modern
+
+logger:
+  default: info
+  logs:
+    homeassistant.components.mqtt: debug
